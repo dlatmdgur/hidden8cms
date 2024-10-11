@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>SuperWinGame FAQ</title>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width" />
+    <meta http-equiv="Expires" content="Mon, 22 Jul 2002 11:12:01 GMT" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="No-Cache" />
+
+    <link type="text/css" href="../assets/css/style.css?v=20211021" rel="stylesheet" />
+    <script src="../assets/js/jquery.2.2.4.min.js"></script>
+    <script src="../assets/js/common.js?v=20200818"></script>
+</head>
+<body>
+<!-- wrap -->
+<div id="page">
+    <section id="att_bg">
+        <div class="basic_padding cs_name"><div><b>FAQ</b></div></div>
+        <ul id="nav">
+        </ul>
+    </section>
+</div>
+<script>
+    $(document).ready(function() {
+        let drawFaq = function(json) {
+            let today = getDatetimeString(new Date());
+            $(json).each(function(index, faq) {
+
+                // 예약게시 체크
+                if (faq.status === "2") {
+                    if ( (getTimeDiff(faq.reserve_start_date, today) < 0) || (getTimeDiff(today, faq.reserve_end_date) < 0) ) {
+                        return false;
+                    }
+                }
+
+                let border = (index === 0)? 2 : 1;
+                let faqLi = '<li style="border-top: '+ border +'px solid #f1f1f1;">' +
+                    '<div class="basic_padding cs_title">' + faq.title + ' ' + '</div>' +
+                    '<ul>' +
+                    '<li>' +
+                    '<div class="cs_contents">' + faq.contents + '</div>' +
+                    '</li>' +
+                    '</ul>' +
+                    '</li>';
+
+                $('#nav').append(faqLi);
+            });
+        };
+
+        // load json
+        let jsoncache = Math.floor(+ new Date() / 60000);
+        $.getJSON("../file/faq.json?v="+jsoncache, function(json) {
+            console.log(json);
+            drawFaq(json);
+        });
+    });
+
+    $(document).on('click', '#nav > li', function () {
+        console.log($(this).find('ul').is(':hidden'));
+        if($(this).find('ul').is(':hidden')){
+            $('#nav ul').slideUp();
+            $(this).find('ul').slideDown();
+        } else {
+            $(this).find('ul').slideUp();
+        }
+    });
+</script>
+</body>
+</html>

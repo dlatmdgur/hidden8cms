@@ -1,0 +1,77 @@
+@charset "utf-8";
+/* CSS Document */
+
+/* 폰트 */
+@import url(https://fonts.googleapis.com/earlyaccess/notosanskr.css);
+
+/* tags */
+* { box-sizing:border-box; }
+html, body { min-height:100%; }
+body {
+    margin:0; padding:0;
+    font-family:'Noto Sans KR', sans-serif;
+    font-size:12px;
+    background-color:#ececec;
+}
+a { text-decoration:none; }
+
+/* 0212추가 */
+table {border-collapse: collapse;}
+table caption {overflow: hidden; width: 0; height: 0; text-indent: -9999px;}
+
+/* 선택시 표시안나게 */
+html {
+    -webkit-touch-callout:none;
+    -webkit-user-select:none;
+    -webkit-tap-highlight-color:rgba(0, 0, 0, 0);
+}
+::-webkit-input-placeholder { color:#cccccc; }
+::-moz-placeholder          { color:#cccccc; }
+:-ms-input-placeholder      { color:#cccccc; }
+:-moz-placeholder           { color:#cccccc; }
+
+/* common */
+.basic_padding { padding:10px; background-color: #8a8a8a; }
+.basic_padding b { color: #fff; }
+.basic_padding a:link { color: #e4e4e4; }
+
+/*0212 수정*/
+table {}
+table.table01 { width: 100%;}
+table.table01 > thead > tr > th,
+table.table01 > tbody > tr > td { padding:10px;}
+table.table01 > thead > tr > th { background-color:#D5D5D5; text-align:center; border:1px solid #B6B6B6; }
+table.table01 > tbody > tr > td { text-align:center; border:1px solid #B6B6B6; }
+table.table01 > tbody > tr > td.subtit {background-color:#e4e4e4; font-weight:bold;}/*0213 추가*/
+
+#page { min-width:320px; }
+
+#nav { color:#222222; list-style:none; padding: 0; margin: 0; }
+#nav > li { list-style:none; padding: 0; margin: 0; cursor:pointer; }
+#nav > li > ul { display:none; list-style:none; padding: 0; margin: 0; padding-left:1em;}
+#nav > li > ul > li { list-style:none; padding: 0; margin: 0; }
+
+a:link{text-decoration:none;color:#8C8C8C;}
+
+#nav_notice > li{ cursor:pointer; }
+#nav_notice ul{ display:none;list-style:none; }
+#nav_notice, #nav_notice ul{ list-style:none; margin:0; padding:0; }
+#nav_notice ul{ list-style:none; }
+#nav_notice > li{ cursor:pointer; }
+#nav_faq ul{ display:none;list-style:none; }
+#nav_faq, #nav_faq ul{ list-style:none; margin:0; padding:0; }
+#nav_faq ul{ list-style:none; }
+#nav_faq > li{ cursor:pointer; }
+a:link{text-decoration:none;color:#8C8C8C;}
+
+hr { border:solid 1px #fff; }
+.cs_name { color: #fff; background-color: #8a8a8a; }
+.cs_arrow { float:right; margin-left:10px; width:8px; height:18px; background:url('/publish/assets/img/arrow_black_right.png') center no-repeat; background-size:contain; }
+.cs_title {color: #3a3a3a; background-color: #fff; font-weight: bold;}
+.cs_title > span { color: #b3a699; font-weight: normal; margin-left: 11px; }
+.cs_contents { text-indent: 10px; background-color: #f1f1f1; font-size: 12px;  color: #000; }
+.footer { margin-top: 15px; padding:0px 10px 10px 10px; }
+.footer span { display: block; }
+.cs_contents > p { font-size: 12px; }
+
+span.desc { display: block; position: absolute; min-width: 240px; right: 10px; bottom: 8px; color: #ffffff; text-align: right; }
