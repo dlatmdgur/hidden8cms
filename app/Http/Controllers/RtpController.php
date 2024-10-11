@@ -125,7 +125,13 @@ class RtpController extends Controller
 		$data['page']		= $request->get('page') ?? 1;
 		$data['offset']		= $request->get('offset') ?? 20;
 
-		$data['rtp_range']	= self::rtp_range;
+		//2024-10-11 조팀장님 요청 일단 rtp 큰 값이 먼저 나오게 수정
+		$rtpRange			= self::rtp_range;
+
+		//키 값으로 정렬
+		krsort($rtpRange);
+
+		$data['rtp_range']	= $rtpRange;
 
 		$data['rtps']		= Rtp::getGenerals([], $data['page'], $data['offset']);
 
@@ -234,8 +240,13 @@ class RtpController extends Controller
 		$data['page']		= $request->get('page') ?? 1;
 		$data['offset']		= $request->get('offset') ?? 20;
 
-		$data['rtp_range']	= self::rtp_range;
+		//2024-10-11 조팀장님 요청 일단 rtp 큰 값이 먼저 나오게 수정
+		$rtpRange			= self::rtp_range;
 
+		//키 값으로 정렬
+		krsort($rtpRange);
+
+		$data['rtp_range']	= $rtpRange;
 
 
 		$data['rtps']		= Rtp::getSlots(
@@ -342,8 +353,13 @@ class RtpController extends Controller
 		$data['page']		= $request->get('page') ?? 1;
 		$data['offset']		= $request->get('offset') ?? 99999;
 
-		$data['rtp_range']	= self::rtp_range;
+		//2024-10-11 조팀장님 요청 일단 rtp 큰 값이 먼저 나오게 수정
+		$rtpRange			= self::rtp_range;
 
+		//키 값으로 정렬
+		krsort($rtpRange);
+
+		$data['rtp_range']	= $rtpRange;
 		$data['rtps']		= [];
 
 
