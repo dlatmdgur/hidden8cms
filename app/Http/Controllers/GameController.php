@@ -163,6 +163,7 @@ class GameController extends Controller
 		//$highLowGameInfo = null;
 		//$sevenPokerGameInfo = null;
 		$texasHoldemGameInfo = null;
+		$badugiHoldemGameInfo 	= null;
 		//$taisaiGameInfo = null;
 		//$omahaHoldemGameInfo = null;
 
@@ -172,6 +173,7 @@ class GameController extends Controller
 		//$dailyHighLowInfo = null;
 		//$dailySevenPokerInfo = null;
 		$dailyTexasHoldemInfo = null;
+		$dailyBadugiHoldemInfo = null;
 		//$dailyTaisaiInfo = null;
 		//$dailyOmahaHoldemInfo = null;
 
