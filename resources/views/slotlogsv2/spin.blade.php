@@ -154,19 +154,19 @@
                                             <td class="text-right pl-3 pr-2"><a href="/slotusers/detail?id={{ $row->uid }}" target="_blank">{{ $row->uid }}</a></td>
 		@if (!empty($row->results->iFee))
 
-											<td class="text-right pl-3 pr-2" style="color: #CCC;">{{ $row->bet > 0 ? Helper::swNumberFormat(-($row->bet), 3) : '-' }}</td>
-											<td class="text-right pl-3 pr-2">{{ Helper::swNumberFormat(-($row->results->iFee), 3) }}</td>
+											<td class="text-right pl-3 pr-2" style="color: #CCC;">{{ $row->bet > 0 ? number_format($row->bet) : '-' }}</td>
+											<td class="text-right pl-3 pr-2">{{ number_format($row->results->iFee) }}</td>
 		@else
 
-											<td class="text-right pl-3 pr-2">{{ $row->bet > 0 ? Helper::swNumberFormat(-($row->bet), 3) : '-' }}</td>
+											<td class="text-right pl-3 pr-2">{{ $row->bet > 0 ? number_format($row->bet) : '-' }}</td>
 											<td class="text-right pl-3 pr-2">-</td>
 		@endif
 
-											<td class="text-right pl-3 pr-2">{{ $row->payout > 0 ? Helper::swNumberFormat(($row->payout), 3) : '-' }}</td>
-											<td class="text-right pl-3 pr-2">{{ ($row->payout - $row->free_payout - $row->bonus_payout) > 0 ? Helper::swNumberFormat(($row->payout - $row->free_payout - $row->bonus_payout), 3) : '-' }}</td>
-											<td class="text-right pl-3 pr-2">{{ $row->free_payout > 0 ? Helper::swNumberFormat(($row->free_payout), 3) : '-' }}</td>
-											<td class="text-right pl-3 pr-2">{{ $row->bonus_payout > 0 ? Helper::swNumberFormat(($row->bonus_payout), 3) : '-' }}</td>
-											<td class="text-right pl-3 pr-2">{{ $row->jackpot_payout > 0 ? Helper::swNumberFormat(($row->jackpot_payout), 3) : '-' }}</td>
+											<td class="text-right pl-3 pr-2">{{ $row->payout > 0 ? number_format($row->payout) : '-' }}</td>
+											<td class="text-right pl-3 pr-2">{{ ($row->payout - $row->free_payout - $row->bonus_payout) > 0 ? number_format($row->payout - $row->free_payout - $row->bonus_payout) : '-' }}</td>
+											<td class="text-right pl-3 pr-2">{{ $row->free_payout > 0 ? number_format($row->free_payout) : '-' }}</td>
+											<td class="text-right pl-3 pr-2">{{ $row->bonus_payout > 0 ? number_format($row->bonus_payout) : '-' }}</td>
+											<td class="text-right pl-3 pr-2">{{ $row->jackpot_payout > 0 ? number_format($row->jackpot_payout) : '-' }}</td>
 
 											<td><span class="badge badge-{{ ($row->game_type == 'F' ? 'danger' : ($row->game_type == 'B' ? 'warning' : 'success')) }}">{{ $row->game_type }}</span></td>
 		@if ($row->results->aWinType[0] >= 32)
@@ -194,9 +194,10 @@
 											<td>-</td>
 		@endif
 
-											<td class="text-right pl-3 pr-2">{{ Helper::swNumberFormat(($row->bef_coins + $row->bef_bonus), 3) }}</td>
-											<td class="text-right pl-3 pr-2">{{ Helper::swNumberFormat(($row->aft_coins + $row->aft_bonus), 3) }}</td>
-											<td class="text-right pl-3 pr-2">{{ Helper::swNumberFormat((($row->aft_coins + $row->aft_bonus) - ($row->bef_coins + $row->bef_bonus)), 3) }}</td>
+											<td class="text-right pl-3 pr-2">{{ number_format($row->bef_coins + $row->bef_bonus) }}</td>
+											<td class="text-right pl-3 pr-2">{{ number_format($row->aft_coins + $row->aft_bonus) }}</td>
+											@php $chgGoodsAmt = (($row->aft_coins + $row->aft_bonus) - ($row->bef_coins + $row->bef_bonus)) @endphp
+											<td class="text-right pl-3 pr-2 text-{{ $chgGoodsAmt > 0 ? 'success' : 'danger'}}">{{  ($chgGoodsAmt > 0 ? '+' : '').number_format($chgGoodsAmt)  }}</td>
 
 											<td data-type="ver" class="pl-2 pr-2">{{ $row->server_ver }}</td>
 											<td data-type="ver" class="pl-2 pr-2">{{ $row->client_ver }}</td>

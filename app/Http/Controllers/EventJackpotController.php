@@ -223,6 +223,7 @@ class EventJackpotController extends Controller
 			$status 		=	'Completed';
 
 			$row->delay_min = '';
+			$possibleCancel = false;
 
 			//dateTime 오브젝트면
 			if (!empty($row->start_time))
@@ -245,13 +246,15 @@ class EventJackpotController extends Controller
 				else
 				{
 					$now = new DateTime();
-					if ($startTime > $now) {
-						$status = 'Pending';
+					$status = 'Pending';
 
-					}
+					if ($startTime > $now)
+						$possibleCancel = true;
 				}
+
 			}
 
+			$row->possible_cancel = $possibleCancel;
 			$row->status = $status;
 		}
 

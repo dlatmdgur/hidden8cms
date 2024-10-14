@@ -63,6 +63,7 @@
                                         <th class="sticky-header">딜러비</th>
                                         <th class="sticky-header">최종상태</th>
                                         <th class="sticky-header">결과</th>
+                                        <th class="sticky-header">게임상세</th>
                                         <!--<th class="sticky-header">배팅로그/디스커넥트</th>
                                         <th class="sticky-header">패킷로그</th>-->
                                     </tr>
@@ -85,6 +86,27 @@
     <input type="hidden" name="startDate" id="startDate" value="{{ $startDate }}" />
     <input type="hidden" name="endDate" id="endDate" value="{{ $endDate }}" />
 
+    	<!-- 로그 리스트: 시작 -->
+	 <!--	포인트 상세내역 : 시작						-->
+	<div id="game_detail" class="modal fade" tabindex="-1">
+		<div class="modal-dialog modal-md modal-xl">
+			<div class="modal-content" style="overflow-y:auto;">
+				<!-- <form name="frmApply" method="post" onsubmit="return false;" method-transfer="async" class="m-0"> -->
+					<input type="hidden" name="user_seq" value="" />
+
+					<div class="modal-header"><h5 class="modal-title"><b>게임 상세보기</b></h5></div>
+
+					<div class="modal-body" style="oveflow-x: auto;">
+                        <iframe src="" style="width: 100%; min-height: 73vh; border: 0;"></iframe>
+					</div>
+
+					<div class="modal-footer">
+						<button type="cancel" class="btn btn-secondary" data-dismiss="modal" aria-label="Close">취소</button>
+					</div>
+				<!-- </form> -->
+			</div>
+		</div>
+	</div>
     <!-- Switchery -->
     <link href="/vendors/switchery/dist/switchery.min.css" rel="stylesheet">
     <style>
@@ -144,6 +166,7 @@
             initLoad();
         });
 
+        $('#')
         // packet log
         $(document).on('click', '.packetlog', function() {
             $.ajaxSetup({
@@ -170,6 +193,18 @@
             });
         });
 
+        $('#game_detail').on('show.bs.modal', function(e) {
+
+            let emb = $(e.relatedTarget);
+            let emm = $(this);
+
+
+            $.get( ['/game/detail', emb.data('type'), emb.data('game-detail')].join('/'),
+                function(d) {
+                    emm.find('iframe').contents().find('html').html(d.html);
+                }
+            );
+        });
         // betting log
         $(document).on('click', '.bettinglog', function() {
             $.ajaxSetup({
@@ -403,6 +438,14 @@
 									'</div>' +
 									'</td>';
                             }
+
+                            if (logData.game_detail) {
+                                row += ` <td class="game_detail"> ${logData.game_detail} </td> `;
+                            } else {
+                                row += ` <td class="game_detail"> - </td> `;
+
+                            }
+
 							row += `</tr>`;
                             rows.push(row);
                         }
@@ -422,6 +465,7 @@
 							mergeCells('all_game_table', 'room_game');
 							mergeCells('all_game_table', 'room_logdate');
 							mergeCells('all_game_table', 'room_channel');
+                            mergeCells('all_game_table', 'game_detail');
 						}
 
                     }
@@ -441,6 +485,7 @@
                     $("#search-error-bag").show();
                 }
             });
+
 
         }
     </script>

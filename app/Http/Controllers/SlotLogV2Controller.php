@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Validator;
 
 use Exception;
 
-
 class SlotLogV2Controller extends Controller
 {
 	private const divInt		= 1000;
@@ -106,7 +105,6 @@ class SlotLogV2Controller extends Controller
 
 		$data['end_page']	= ceil($data['page'] / 10) * 10;
 		$data['end_page']	= $data['end_page'] >= $data['total_page'] ? $data['total_page'] : $data['end_page'];
-
 
 
 		return view('slotlogsv2.spin', $data);

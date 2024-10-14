@@ -75,6 +75,7 @@
 											<div class="input-group m-0 d-flex justify-content-center">
 												<div class="input-group-prepend">
 													<select name="event_delay_min" class="form-control form-control-sm m-0">
+														<option value="0">즉시지급</option>
 														@php $evtDelayTimes = explode(',' ,env('EVENT_DELAY_TIMES')); @endphp
 														@foreach ($evtDelayTimes as $min)
 														<option value="{{ $min }}"> {{ number_format($min) }}&nbsp;min</option>

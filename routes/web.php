@@ -75,6 +75,7 @@ Route::group(
 		Route::post('/game/detailExcel', 'GameController@detailExcel')->name('games.detailExcel');
 		Route::post('/game/detail2', 'GameController@detail2')->name('games.detail2');
 		Route::post('/game/detail3', 'GameController@detail3')->name('games.detail3');
+		Route::get('/game/detail/{gameType}/{idx}', 'GameController@gameDetail')->name('games.gameDetail');
 		Route::post('/game/packet', 'GameController@packet')->name('games.packet');
 		Route::post('/game/betting', 'GameController@betting')->name('games.betting');
 

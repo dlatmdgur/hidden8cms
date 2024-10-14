@@ -22,7 +22,7 @@
 				<td class="pl-3 pr-3 text-center">{{ $row->reward_rate }}%</td>
 				<td class="pl-3 pr-3 text-center fw-bold text-{{ ($row->status  === 'Completed') ? 'success' : (($row->status  === 'Pending') ? 'dark' : 'danger')}}">{{ $row->status }}</td>
 				<td>
-					@if ($row->status === 'Pending')
+					@if ($row->possible_cancel)
 						<button type="button" data-method="append" class="btn btn-sm btn-danger m-0" data-cancel="{{ $row->idx }}" data-start="{{ $row->start_time }}">CANCEL</button>
 					@else
 						-

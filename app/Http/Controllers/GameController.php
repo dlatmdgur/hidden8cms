@@ -32,6 +32,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
@@ -469,7 +470,7 @@ class GameController extends Controller
 			if (count($channels) > 0) {
 				$baccaratLogs = BlackjackResultLog::getResultlLog($userSeq, 2, $channels, $startDate, $endDate);
 
-				foreach ($baccaratLogs as $log) {
+				foreach ($baccaratLogs as &$log) {
 					$gameLogs = [];
 					$gameLogs['gameType'] = 2;
 					$gameLogs['roomId'] = $log->unique_num;
@@ -488,6 +489,7 @@ class GameController extends Controller
 
 				foreach ($baccaratLogs as $log) {
 					$gameLogs = [];
+
 					$gameLogs['gameType'] = 3;
 					$gameLogs['roomId'] = $log->unique_num;
 					$gameLogs['logDate'] = $log->log_date;
@@ -554,11 +556,12 @@ class GameController extends Controller
 			if (count($channels) > 0) {
 				$texasHoldemLogs = GameResultLog::getResultlLog($userSeq, 7, $channels, $startDate, $endDate);
 
-				foreach ($texasHoldemLogs as $log) {
+				foreach ($texasHoldemLogs as &$log) {
 					$gameLogs = [];
 					$gameLogs['gameType'] = 7;
 					$gameLogs['roomId'] = $log->unique_num;
 					$gameLogs['logDate'] = $log->log_date;
+					$log->game_detail = "<button type='button' class='btn btn-sm btn-danger m-0' data-type='{$log->game_type}' data-toggle='modal' data-target='#game_detail' data-game-detail='{$log->unique_num}'>상세보기</button>";
 					$gameLogs['data'] = $log;
 					array_push($allGameLogs, $gameLogs);
 				}
@@ -605,11 +608,12 @@ class GameController extends Controller
 			if (count($channels) > 0) {
 				$badugiHoldemLogs = GameResultLog::getResultlLog($userSeq, 11, $channels, $startDate, $endDate);
 
-				foreach ($badugiHoldemLogs as $log) {
+				foreach ($badugiHoldemLogs as &$log) {
 					$gameLogs = [];
 					$gameLogs['gameType'] = 11;
 					$gameLogs['roomId'] = $log->unique_num;
 					$gameLogs['logDate'] = $log->log_date;
+					$log->game_detail = "<button type='button' class='btn btn-sm btn-danger m-0' data-idx='{$log->unique_num}'>상세보기</button>";
 					$gameLogs['data'] = $log;
 					array_push($allGameLogs, $gameLogs);
 				}
@@ -2124,5 +2128,35 @@ class GameController extends Controller
 		}
 
 		return response()->json(['error' => false, 'messages' => 'success', 'records' => $records], 200);
+	}
+
+	public function gameDetail($gameType, $idx)
+	{
+		$httpCode = 200;
+		$msg = '정상적으로 데이터를 불러오지 못했습니다.';
+
+		$nameByType = ['2' => 'blackjack', '3' => 'baccarat', '7' => 'holdem', '11' => 'holdembadugi'];
+
+		if (! isset($nameByType[$gameType]))
+		{
+			$httpCode = 403;
+			$msg = '올바르지 못한 접근입니다.';
+
+			return response()->json(['msg' => $msg], $httpCode);
+		}
+
+
+		$res = Http::withHeaders([
+					'Authorization' => 'Bearer '.env('API_BEARER_TOKEN'),
+					'Accept'		=> '*/*',
+				])->get(implode('/',[env('API_URL').'/review', $nameByType[$gameType], $idx]));
+
+		if ($res->failed())
+		{
+			$httpCode = 400;
+			return response()->json(['msg' => $msg], $httpCode);
+		}
+
+		return response()->json(['html' => $res->body()], $httpCode);
 	}
 }
