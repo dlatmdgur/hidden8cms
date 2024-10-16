@@ -87,15 +87,20 @@ class Rtp extends BaseModel
 	 * @param integer $offset 페이지당 가져올 갯수 ( default 20 )
 	 * @return object
 	 */
-	public static function getSlots($where, $page, $offset)
+	public static function getSlots($where, $page, $offset, array $provider = [])
 	{
 		$result = DB::connection('slot_common')
 			->table('external_slotlist AS es')
 			->leftjoin('rtp_slots AS rs', 'rs.slot_id', '=', 'es.slot_id')
-			->select('es.slot_id', 'es.name_kr', 'es.name_en', 'rs.updated', 'rs.rtp')
-			->where($where)
-			->orderBy('es.slot_id', 'ASC')
-			->paginate($offset, ['*'], 'page', $page);
+			->select('es.slot_id', 'es.name_kr', 'es.name_en', 'rs.updated', 'rs.rtp');
+		if (count($provider) > 0)
+		{
+			$result = $result->whereIn('provider', $provider);
+		}
+
+		$result = $result->where($where)
+						->orderBy('es.slot_id', 'ASC')
+						->paginate($offset, ['*'], 'page', $page);
 
 		$result->withQueryString()->links();
 

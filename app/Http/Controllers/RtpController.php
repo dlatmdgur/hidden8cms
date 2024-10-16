@@ -247,6 +247,7 @@ class RtpController extends Controller
 		krsort($rtpRange);
 
 		$data['rtp_range']	= $rtpRange;
+		$selProviders = ['hidden8'];
 
 
 		$data['rtps']		= Rtp::getSlots(
@@ -254,7 +255,8 @@ class RtpController extends Controller
 				['status', '=', 1],
 			],
 			$data['page'],
-			$data['offset']
+			$data['offset'],
+			$selProviders
 			);
 
 		return view('rtps.slot', $data);
