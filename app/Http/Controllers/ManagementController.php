@@ -815,8 +815,8 @@ class ManagementController extends Controller
         } elseif($request->input('type') == 'server') {
             $validator = Validator::make($request->input(), array(
                 'desc' => 'required',
-                'cdn' => 'required',
-                // 'web_lobby' => 'required',
+                'cdn'   => 'required',
+                'api'   =>  'required',
                 'web_world' => 'required',
                 'slot_server' => 'required',
                 'slot_lobby' => 'required',
@@ -858,6 +858,7 @@ class ManagementController extends Controller
             $bindValues['http_lobby']           = $http_lobby;
             $bindValues['`server_status`']      = $request->input('server_status');
             $bindValues['`server_notice`']      = $server_notice;
+            $bindValues['api']                  = $request->input('api') ?? '';
 
             //
             // DB UPSERT

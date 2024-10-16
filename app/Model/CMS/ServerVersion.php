@@ -20,7 +20,7 @@ class ServerVersion extends BaseModel
 	 */
 	protected $fillable = [
 		'version', 'desc', 'cdn', 'web_world'
-		, 'slot_server', 'slot_lobby', 'server_status', 'server_notice', 'tournament_lobby', 'http_lobby'
+		, 'slot_server', 'slot_lobby', 'server_status', 'server_notice', 'tournament_lobby', 'http_lobby', 'api',
 	];
 
 

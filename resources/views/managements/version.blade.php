@@ -87,6 +87,7 @@
                                                     <th>버전</th>
                                                     <th>환경</th>
                                                     <th>CDN</th>
+                                                    <th>API</th>
                                                     <th>웹월드</th>
                                                     <th>슬롯서버</th>
                                                     <th>슬롯로비</th>
@@ -98,7 +99,7 @@
                                                 </tr>
                                                 </thead>
                                                 <tbody class="text-center text-nowrap align-middle server">
-                                                <tr>
+                                                <tr style="white-space:nowrap; word-break: break-all;">
                                                     <td colspan="999" class="text-center p-3"><b><i>VERSION DATA LOADING...</i></b></td>
                                                 </tr>
                                                 </tbody>
@@ -159,6 +160,10 @@
                         <label class="mb-0" for="cdn"><strong>CDN</strong></label>
                         <div class="form-group">
                             <input type="text" name="cdn" value="" placeholder="CDN 주소" class="form-control" />
+                        </div>
+                        <label class="mb-0" for="cdn"><strong>API</strong></label>
+                        <div class="form-group">
+                            <input type="text" name="api" value="" placeholder="API 주소" class="form-control" />
                         </div>
                         <label class="mb-0" for="web_world"><strong>웹월드</strong></label>
                         <div class="form-group">
@@ -245,7 +250,7 @@ $(function() {
     let data = [];
     const cols_client = ['version', 'update_date', 'group1'];
     const cols_server = [
-        'idx', 'version', 'desc', 'cdn', 'web_world'
+        'idx', 'version', 'desc', 'cdn', 'api', 'web_world'
         , 'slot_server', 'slot_lobby', 'tournament_lobby', 'http_lobby', 'server_status', 'server_notice', 'group1'
     ];
 
