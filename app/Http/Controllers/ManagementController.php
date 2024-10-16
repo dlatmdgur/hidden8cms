@@ -861,7 +861,9 @@ class ManagementController extends Controller
             $bindValues['`server_status`']      = $request->input('server_status');
             $bindValues['`server_notice`']      = $server_notice;
 
-            $upsertRs = ServerVersion::upsert('`accountdb`.`version_url`', $bindValues);
+            ServerVersion::upsert('`accountdb`.`version_url`', $bindValues);
+
+            DB::commit();
 
             $endPoint = '/sync-version';
 
@@ -870,16 +872,13 @@ class ManagementController extends Controller
                             'Accept'        => '*/*',
                         ])->get(env('API_URL').$endPoint);
 
-
             if ($syncVerRes->failed())
             {
-                DB::rollback();
-                return response()->json(['error' => 'true', 'messages' => '버전 등록에 문제가 발생했습니다.'], 200);
+                return response()->json(['error' => 'true', 'messages' => '버전등록은 성공했으나, 갱신에는 실패했습니다. 재갱신해주세요.'], 200);
             }
 
         }
 
-        DB::commit();
         return response()->json(['result' => 1, 'messages' => '버전이 등록되었습니다.'], 200);
     }
 
@@ -909,8 +908,22 @@ class ManagementController extends Controller
         if($request->input('type') == 'client') {
             ClientVersion::find($request->input('version'))->delete();
         } elseif($request->input('type') == 'server') {
+
             ServerVersion::find($request->input('idx'))->delete();
+
+            $endPoint = '/sync-version';
+
+            $syncVerRes = Http::withHeaders([
+                            'Authorization' => 'Bearer '.env('API_BEARER_TOKEN'),
+                            'Accept'        => '*/*',
+                        ])->get(env('API_URL').$endPoint);
+
+            if ($syncVerRes->failed())
+            {
+                return response()->json(['result' => 0, 'messages' => '버전 삭제에 문제가 발생했습니다.'], 200);
+            }
         }
+
         return response()->json(['result' => 1, 'messages' => '버전이 삭제되었습니다.'], 200);
     }
 
@@ -964,14 +977,40 @@ class ManagementController extends Controller
             ], 200);
         }
         $record = Whitelist::where('ip', '=', $request->input('ip'))->get();
+
         if($record->count() > 0) {
             return response()->json(['result' => 0, 'messages' => '이미 등록된 IP주소 입니다.'], 200);
         }
-        Whitelist::create([
+
+        DB::beginTransaction();
+
+        $newIp = Whitelist::create([
             'ip' => $request->input('ip'),
             'description' => $request->input('description'),
             'create_datetime' => Carbon::now(),
         ]);
+
+        if ($newIp < 0)
+        {
+            DB::rollback();
+            return response()->json(['result' => 0, 'messages' => 'IP주소 등록이 실패하였습니다.'], 200);
+        }
+
+        DB::commit();
+
+        $endPoint = '/sync-whitelist';
+
+        $syncWhiteRs = Http::withHeaders([
+                        'Authorization' => 'Bearer '.env('API_BEARER_TOKEN'),
+                        'Accept'        => '*/*',
+                    ])->get(env('API_URL').$endPoint);
+
+
+        if ($syncWhiteRs->failed())
+        {
+            return response()->json(['result' => 0, 'messages' => 'IP주소 등록은 성공했으나, 갱신은 실패하였습니다. 재갱신해주세요.'], 200);
+        }
+
         return response()->json(['result' => 1, 'messages' => 'IP주소가 등록되었습니다.'], 200);
     }
 
@@ -992,7 +1031,22 @@ class ManagementController extends Controller
                 'messages' => '필수 항목값이 없습니다.',
             ], 200);
         }
+
         Whitelist::find($request->input('idx'))->delete();
+
+        $endPoint = '/sync-whitelist';
+
+        $syncWhiteRs = Http::withHeaders([
+                        'Authorization' => 'Bearer '.env('API_BEARER_TOKEN'),
+                        'Accept'        => '*/*',
+                    ])->get(env('API_URL').$endPoint);
+
+
+        if ($syncWhiteRs->failed())
+        {
+            return response()->json(['result' => 0, 'messages' => 'IP주소 등록은 성공했으나 갱신실패하였습니다. 재갱신해주세요.'], 200);
+        }
+
         return response()->json(['result' => 1, 'messages' => 'IP주소가 삭제되었습니다.'], 200);
     }
 

@@ -2145,7 +2145,6 @@ class GameController extends Controller
 			return response()->json(['msg' => $msg], $httpCode);
 		}
 
-
 		$res = Http::withHeaders([
 					'Authorization' => 'Bearer '.env('API_BEARER_TOKEN'),
 					'Accept'		=> '*/*',

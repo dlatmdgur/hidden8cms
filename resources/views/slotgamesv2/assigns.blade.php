@@ -117,7 +117,7 @@
                                 </div>
                                 <div class="card-footer">
                                     <ul class="alert alert-warning text-dark" role="alert">
-                                        <li class="ml-2"><span>알림 작성 기준</span> {{ date('Y-m-d H:i:s')}}</li>
+                                        <li class="ml-2"><span>알림 작성 기준</span>{{ date('Y-m-d H:i:s')}}</li>
                                         <hr />
                                         <li class="ml-2"><span>기준RTP</span> 유저의 RTP가 기준RTP 최소 ~ 최대 사이의 조건 값을 만족 할 때 사용 가능.</li>
                                         <li class="ml-2"><span>지급확률</span> 기준RTP 조건을 만족할 때, 지급확률에 의해 목표RTP값을 계산.</li>

@@ -5,6 +5,7 @@ use App\Http\Controllers\LogController;
 use App\Http\Controllers\ManagementController;
 use App\Http\Controllers\MemberController;
 use App\Http\Controllers\OperationController;
+use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SlotGameController;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -230,7 +231,13 @@ Route::group(
 		Route::get('/monitor/groupUsers', 'MonitoringController@groupUsers')->name('monitor.groupUsers');
 		Route::post('/monitor/groupLogs', 'MonitoringController@groupLogs')->name('monitor.groupLogs');
 
-
+		#### report
+		Route::prefix('report')->group(function(){
+			Route::get('player', [ReportController::class, 'player'])->name('report.player');
+			Route::get('summary', [ReportController::class, 'summary'])->name('report.summary');
+			Route::get('game', 	[ReportController::class, 'game'])->name('report.game');
+			Route::get('month', [ReportController::class, 'month'])->name('report.month');
+		});
 
 		##### Customer for Slot
 		Route::post('/management/slot/upload', 'SlotManagementController@upload')->name('managements.slot.upload');
