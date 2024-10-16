@@ -982,21 +982,13 @@ class ManagementController extends Controller
             return response()->json(['result' => 0, 'messages' => '이미 등록된 IP주소 입니다.'], 200);
         }
 
-        DB::beginTransaction();
 
-        $newIp = Whitelist::create([
+        Whitelist::create([
             'ip' => $request->input('ip'),
             'description' => $request->input('description'),
             'create_datetime' => Carbon::now(),
         ]);
 
-        if ($newIp < 0)
-        {
-            DB::rollback();
-            return response()->json(['result' => 0, 'messages' => 'IP주소 등록이 실패하였습니다.'], 200);
-        }
-
-        DB::commit();
 
         $endPoint = '/sync-whitelist';
 
