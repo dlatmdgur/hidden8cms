@@ -16,6 +16,9 @@
                         <div class="row x_title">
                             <div class="col-lg-12 margin-tb p-0">
                                 <h2><b>허용 IP 목록</b></h2>
+                                <div class="pull-right pr-0">
+                                    <button class="btn btn-warning" data-sync="whitelist"><b>갱신</b></button>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -165,6 +168,31 @@
                 if(d.result != 1) return false;
                 document.location.reload();
             });
+
+            $('[data-sync]').on('click', function() {
+
+                let confrm = confirm('정말 데이터를 갱신하시겠습니까?');
+
+                if (! confrm)
+                    return false;
+
+                $.ajaxSetup({
+                    headers: {
+                        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                    }
+                });
+                $.post(
+                    "{{ route('management.syncData')}}",
+                    {action: $(this).data('sync')},
+                    function(d)
+                    {
+                        alert(d.message);
+
+                        if (d.result != 1)
+                            return false;
+                    }
+                );
+            })
         });
     </script>
 @endsection

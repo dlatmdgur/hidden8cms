@@ -71,6 +71,7 @@
                                 <h2><b>서버 버전</b></h2>
                                 <div class="pull-right pr-0">
                                     <button class="btn btn-info" data-toggle="modal" data-size="modal-xl" data-target="#modify_server"><b>추가</b></button>
+                                    <button class="btn btn-warning" data-sync="version"><b>갱신</b></button>
                                 </div>
                             </div>
                         </div>
@@ -365,6 +366,31 @@ $(function() {
 
         f.find('[name=idx]').val(s ? '' : d['idx']);
     });
+
+    $('[data-sync]').on('click', function() {
+
+        let confrm = confirm('정말 데이터를 갱신하시겠습니까?');
+
+        if (! confrm)
+            return false;
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        $.post(
+            "{{ route('management.syncData')}}",
+            {action: $(this).data('sync')},
+            function(d)
+            {
+                alert(d.message);
+
+                if (d.result != 1)
+                    return false;
+            }
+        );
+    })
 
     //추가, 변경, 삭제 콜백 처리
     $('form[name=frmSetClient], form[name=frmSetServer], form[name=frmDropClient], form[name=frmDropServer]').on('callback', function(e, d) {

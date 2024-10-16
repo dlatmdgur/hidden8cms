@@ -14,6 +14,8 @@ use App\Model\CMS\Tournament;
 use App\Model\CMS\Whitelist;
 use App\User;
 use Carbon\Carbon;
+use Exception;
+use GuzzleHttp\Exception\RequestException;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Contracts\Support\Renderable;
 use Illuminate\Contracts\View\Factory;
@@ -804,8 +806,6 @@ class ManagementController extends Controller
 
         $setVer = $request->input('version');
 
-        DB::beginTransaction();
-
         if($request->input('type') == 'client') {
             ClientVersion::where('version', '=', $request->input('old_version'))->delete();
             ClientVersion::updateOrCreate(
@@ -828,8 +828,6 @@ class ManagementController extends Controller
                     $errMsg = $err[0];
                     break;
                 }
-
-                DB::rollback();
 
                 return response()->json([
                     'error' => true,
@@ -861,25 +859,30 @@ class ManagementController extends Controller
             $bindValues['`server_status`']      = $request->input('server_status');
             $bindValues['`server_notice`']      = $server_notice;
 
-            ServerVersion::upsert('`accountdb`.`version_url`', $bindValues);
+            //
+            // DB UPSERT
+            //
+            $updStatus = ServerVersion::upsert('`accountdb`.`version_url`', $bindValues);
 
-            DB::commit();
+            // if (! $updStatus)
+            //     return response()->json(['error' => true, 'messages' => '버전등록/수정이 실패하였습니다.'], 200);
 
             $endPoint = '/sync-version';
 
+            //
+            //버전 갱신 API 호출
+            //
             $syncVerRes = Http::withHeaders([
                             'Authorization' => 'Bearer '.env('API_BEARER_TOKEN'),
                             'Accept'        => '*/*',
                         ])->get(env('API_URL').$endPoint);
 
             if ($syncVerRes->failed())
-            {
-                return response()->json(['error' => 'true', 'messages' => '버전등록은 성공했으나, 갱신에는 실패했습니다. 재갱신해주세요.'], 200);
-            }
+                return response()->json(['error' => true, 'messages' => '버전등록/수정은 성공했으나, 갱신에는 실패했습니다. 갱신버튼을 눌러주세요!'], 200);
 
         }
 
-        return response()->json(['result' => 1, 'messages' => '버전이 등록되었습니다.'], 200);
+        return response()->json(['result' => 1, 'messages' => '버전이 등록/수정 되었습니다.'], 200);
     }
 
     /**
@@ -909,7 +912,10 @@ class ManagementController extends Controller
             ClientVersion::find($request->input('version'))->delete();
         } elseif($request->input('type') == 'server') {
 
-            ServerVersion::find($request->input('idx'))->delete();
+            $delStatus = ServerVersion::find($request->input('idx'))->delete();
+
+            if (! $delStatus)
+                return response()->json(['result' => 0, 'messages' => '버전 삭제에 실패했습니다.'], 200);
 
             $endPoint = '/sync-version';
 
@@ -920,7 +926,7 @@ class ManagementController extends Controller
 
             if ($syncVerRes->failed())
             {
-                return response()->json(['result' => 0, 'messages' => '버전 삭제에 문제가 발생했습니다.'], 200);
+                return response()->json(['result' => 0, 'messages' => '버전 삭제했으나 갱신에는 실패했습니다. 갱신 버튼을 눌러주세요!'], 200);
             }
         }
 
@@ -983,12 +989,17 @@ class ManagementController extends Controller
         }
 
 
-        Whitelist::create([
+        $newIp = Whitelist::create([
             'ip' => $request->input('ip'),
             'description' => $request->input('description'),
             'create_datetime' => Carbon::now(),
         ]);
 
+        //
+        // 생성여부확인
+        //
+        if (! $newIp->idx)
+            return response()->json(['result' => 0, 'messages' => 'IP주소 등록에 실패했습니다.'], 200);
 
         $endPoint = '/sync-whitelist';
 
@@ -1024,7 +1035,10 @@ class ManagementController extends Controller
             ], 200);
         }
 
-        Whitelist::find($request->input('idx'))->delete();
+        $delStatus = Whitelist::find($request->input('idx'))->delete();
+
+        if (! $delStatus)
+            return response()->json(['result' => 0, 'messages' => 'IP주소 삭제에 실패했습니다.'], 200);
 
         $endPoint = '/sync-whitelist';
 
@@ -1448,4 +1462,42 @@ class ManagementController extends Controller
         return response()->json(['data' => $data], 200);
     }
 
+    /**
+     * 데이터 동기화 요청
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function syncData(Request $request)
+    {
+        $endPoint = '/sync-'.($request->post('action') ?? '');
+
+        $setHeader = [
+            'Authorization' => 'Bearer '.env('API_BEARER_TOKEN'),
+            'Accept'        => '*/*',
+        ];
+
+        $result = 1;
+        $httpCode = 200;
+        $message = '데이터 갱신 성공!';
+
+        try {
+
+            $syncRes = Http::withHeaders($setHeader)->get(env('API_URL').$endPoint);
+
+            if ($syncRes->fail())
+                throw new Exception();
+
+        } catch (Exception $e) {
+
+            $result = 0;
+            $message = '데이터 갱신 실패!';
+
+        } finally {
+
+            return response()->json(['result' => $result, 'message' => $message ], $httpCode);
+        }
+
+
+    }
 }

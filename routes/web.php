@@ -207,6 +207,7 @@ Route::group(
 		Route::post('/management/tournament/reg', [ManagementController::class, 'tournamentReg']);
 		Route::post('/management/tournament/member/reg', [ManagementController::class, 'tournamentRegMember']);
 
+		Route::post('/management/syncd', [ManagementController::class, 'syncData'])->name('management.syncData');
 
 
 		##### maintenance
