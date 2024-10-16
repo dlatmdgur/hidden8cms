@@ -82,11 +82,10 @@
                                             <input type="hidden" name="type" value="server">
                                             <table class="table table-sm table-striped table-bordered table-hover mb-0">
                                                 <thead class="thead-dark text-center align-top">
-                                                <tr>
+                                                <tr style="white-space:nowrap; word-break: break-all;">
                                                     <th>버전</th>
                                                     <th>환경</th>
                                                     <th>CDN</th>
-                                                    <th>웹로비</th>
                                                     <th>웹월드</th>
                                                     <th>슬롯서버</th>
                                                     <th>슬롯로비</th>
@@ -159,10 +158,6 @@
                         <label class="mb-0" for="cdn"><strong>CDN</strong></label>
                         <div class="form-group">
                             <input type="text" name="cdn" value="" placeholder="CDN 주소" class="form-control" />
-                        </div>
-                        <label class="mb-0" for="web_lobby"><strong>웹로비</strong></label>
-                        <div class="form-group">
-                            <input type="text" name="web_lobby" value="" placeholder="웹로비 주소" class="form-control" />
                         </div>
                         <label class="mb-0" for="web_world"><strong>웹월드</strong></label>
                         <div class="form-group">
@@ -249,7 +244,7 @@ $(function() {
     let data = [];
     const cols_client = ['version', 'update_date', 'group1'];
     const cols_server = [
-        'idx', 'version', 'desc', 'cdn', 'web_lobby', 'web_world'
+        'idx', 'version', 'desc', 'cdn', 'web_world'
         , 'slot_server', 'slot_lobby', 'tournament_lobby', 'http_lobby', 'server_status', 'server_notice', 'group1'
     ];
 
