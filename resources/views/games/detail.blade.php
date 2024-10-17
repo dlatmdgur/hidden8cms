@@ -166,7 +166,6 @@
             initLoad();
         });
 
-        $('#')
         // packet log
         $(document).on('click', '.packetlog', function() {
             $.ajaxSetup({
