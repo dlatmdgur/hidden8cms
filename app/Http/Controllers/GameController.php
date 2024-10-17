@@ -613,7 +613,7 @@ class GameController extends Controller
 					$gameLogs['gameType'] = 11;
 					$gameLogs['roomId'] = $log->unique_num;
 					$gameLogs['logDate'] = $log->log_date;
-					$log->game_detail = "<button type='button' class='btn btn-sm btn-danger m-0' data-type='{$log->game_type}' data-idx='{$log->unique_num}'>상세보기</button>";
+					$log->game_detail = "<button type='button' class='btn btn-sm btn-danger m-0'  data-type='{$log->game_type}' data-toggle='modal' data-target='#game_detail' data-game-detail='{$log->unique_num}'>상세보기</button>";
 					$gameLogs['data'] = $log;
 					array_push($allGameLogs, $gameLogs);
 				}
