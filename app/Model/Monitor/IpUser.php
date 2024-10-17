@@ -107,11 +107,11 @@ class ipUser
 
     public static function getIpUsers($ip, $startDate, $endDate)
     {
-        $sql = " SELECT L.user_seq, A.nickname, A.google_email, A.platform_id, A.user_state, L.ip, L.log_date, ".
+        $sql = " SELECT L.user_seq, A.nickname, A.account, A.user_state, L.ip, L.log_date, ".
                 "       U.gem, U.gem_event, U.chip, U.gold, U.safe_chip, U.safe_gold ".
                 " FROM logdb.login_log L ".
-                " JOIN gamedb.user_info U ON L.user_seq = U.user_seq ".
-                " JOIN accountdb.account_info A ON L.user_seq = A.user_seq ".
+                " LEFT JOIN gamedb.user_info U ON L.user_seq = U.user_seq ".
+                " LEFT JOIN accountdb.account_info A ON L.user_seq = A.user_seq ".
                 " WHERE L.ip = ? AND L.log_date BETWEEN ? AND ? ".
                 "       AND log_seq IN ( SELECT MAX(log_seq) FROM logdb.login_log GROUP BY user_seq ) ".
                 " ORDER BY L.log_date, L.user_seq ";

@@ -431,6 +431,7 @@ class MonitoringController extends Controller
             $messages = null;
 
             $ipUserList = IpUser::getIpUsers($ip, $startDate, $endDate);
+
         }
         return response()->json([
             'error' => $error,

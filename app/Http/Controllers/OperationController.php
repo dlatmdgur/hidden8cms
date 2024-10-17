@@ -97,8 +97,8 @@ class OperationController extends Controller
         $accountInfo = AccountInfo::where('user_seq', $userSeq)->first();
 
         if (!is_null($accountInfo)) {
-            if ($accountInfo->user_state === "2") {
-                $messages = ['탈퇴 유저는 지급/회수 할 수 없습니다.'];
+            if (in_array($accountInfo->user_state ,['1', '2'])) {
+                $messages = ['정지 상태가 아니면 회수할 수 없습니다.'];
             } else {
 
                 $error = false;
@@ -235,8 +235,8 @@ class OperationController extends Controller
         $accountInfo = AccountInfo::where('user_seq', $userSeq)->first();
 
         if (!is_null($accountInfo)) {
-            if ($accountInfo->user_state === "2") {
-                $messages = ['탈퇴 유저는 지급/회수 할 수 없습니다.'];
+            if (in_array($accountInfo->user_state ,['1', '2'])) {
+                $messages = ['정지상태가 아니면 회수할 수 없습니다.'];
             } else {
 
                 $error = false;

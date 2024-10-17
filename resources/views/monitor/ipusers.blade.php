@@ -316,15 +316,15 @@
                                 let tr = $('<tr>' +
                                     '<td>' + (++no) + '</td>' +
                                     '<td>' + list.user_seq + '</td>' +
-                                    '<td>' + list.nickname + '</td>' +
-                                    '<td>' + ( (list.google_email.length > 0)? list.google_email : list.platform_id ) + '</td>' +
-                                    '<td>' + list.user_state + '</td>' +
-                                    '<td>' + list.gem + '</td>' +
-                                    '<td>' + list.gem_event + '</td>' +
-                                    '<td>' + numberToKorean(list.chip) + '</td>' +
-                                    '<td>' + numberToKorean(list.safe_chip) + '</td>' +
-                                    '<td>' + numberToKorean(list.gold) + '</td>' +
-                                    '<td>' + numberToKorean(list.safe_gold) + '</td>' +
+                                    '<td>' + ((list.nickname == null) ? '탈퇴유저': list.nickname) + '</td>' +
+                                    '<td>' + ((list.account == null) ? '' : list.account )+'</td>' +
+                                    '<td>' + ((list.user_state == null) ? '' : list.user_state) + '</td>' +
+                                    '<td>' + ((list.gem == null) ? '' : list.gem) + '</td>' +
+                                    '<td>' + ((list.gem_event == null) ? '' : list.gem_event) + '</td>' +
+                                    '<td>' + ((list.chip == null) ? '' : numberToKorean(list.chip)) + '</td>' +
+                                    '<td>' + ((list.safe_chip == null) ? '' : numberToKorean(list.safe_chip))+ '</td>' +
+                                    '<td>' + ((list.gold == null) ? '' : numberToKorean(list.gold)) + '</td>' +
+                                    '<td>' + ((list.safe_gold == null) ? '' : numberToKorean(list.safe_gold)) + '</td>' +
                                     '<td>' + list.log_date + '</td>' +
                                     '</tr>');
                                 users_table.row.add(tr);
