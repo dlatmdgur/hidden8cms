@@ -23,7 +23,7 @@
                             <div class="col-lg-3 mt-2">
                                 <div class="pull-right">
                                     증감머니 :
-                                    <span id="increase" style="color:mediumblue; font-weight:bold;">{{ Helper::swNumberFormat($increase, 3) }}</span>
+                                    <span id="increase" style="color:mediumblue; font-weight:bold;">{{ number_format($increase) }}</span>
                                 </div>
                             </div>
 						</div>

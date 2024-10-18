@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Validator;
 
 use Exception;
 
+
 class SlotLogV2Controller extends Controller
 {
 	private const divInt		= 1000;
@@ -74,6 +75,7 @@ class SlotLogV2Controller extends Controller
 		$data['page']		= empty($request->query('page')) ? 1 : intval($request->query('page'));
 		$data['limit']		= empty($request->query('limit')) ? 20 : intval($request->query('limit'));
 
+		$data['increase']   = 0;
 
 		// 슬롯 레퍼런스 가져오기.
 		$data['slots']	= SlotInfoV2::getSlots();
@@ -95,9 +97,14 @@ class SlotLogV2Controller extends Controller
 			);
 
 
+		foreach ($result['data'] as $row)
+		{
+			$data['increase'] += (float)$row->aft_coins + (float)$row->aft_bonus - (float)$row->bef_coins - (float)$row->bef_bonus;
+		}
+
 		$data['data']		= $result['data'];
 		$data['count']		= $result['count'];
-        $data['increase']   = $result['increase'];
+
 
 		$data['total_page']	= $data['count'] > 0 ? ceil($data['count'] / $data['limit']) : 1;
 
