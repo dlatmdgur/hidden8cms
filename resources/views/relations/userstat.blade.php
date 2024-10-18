@@ -31,8 +31,8 @@
 										<tr>
 											<th class="col-1">텍사스홀덤</th>
 											<th class="col-1">홀덤바둑이</th>
-											<th class="col-1">블랙잭</th>
-											<th class="col-1">바카라</th>
+											<th class="col-1">블랙잭(오픈예정)</th>
+											<th class="col-1">바카라(오픈예정)</th>
 											<th class="col-1">슬롯</th>
 										</tr>
 									</thead>
