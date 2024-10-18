@@ -48,7 +48,7 @@ class Report extends BaseModel
 								DB::raw('SUM(uc.payout) AS tot_payout'), DB::raw('IFNULL(SUM(payout) / (SUM(bet) + SUM(fee)) * 100, 0)  AS rtp'))
 						->where($where)
 						->groupby('uc.datecode')->groupby('uc.uid')
-						->orderby('uc.uid', 'ASC')->paginate(20);
+						->orderby('uc.datecode', 'DESC')->orderby('uc.uid', 'ASC')->paginate(20);
 	}
 
 	/**

@@ -207,22 +207,6 @@
 			</div>
 			@endif
 
-			<div class="menu_section">
-				<div class="menu_title"> 리포트 </div>
-				<ul class="nav side-menu">
-					<li><a><i class="fa fa-file-o"></i>리포트 <span class="fa fa-chevron-down"></span></a>
-						<ul class="nav child_menu">
-							<li><a href="{{ route('report.player') }}">플레이어별</a></li>
-
-							<li><a href="{{ route('report.summary') }}">요약</a></li>
-
-							<li><a href="{{ route('report.game') }}">게임별</a></li>
-
-							<li><a href="{{ route('report.month') }}">월별</a></li>
-						</ul>
-					</li>
-				</ul>
-			</div>
 
 			@if(auth()->user()->can('statistics'))
 			<div class="menu_section">
@@ -299,6 +283,21 @@
 					</li>
 				</ul>
 				@endcan
+
+				<ul class="nav side-menu">
+					<li><a><i class="fa fa-file-o"></i>리포트 <span class="fa fa-chevron-down"></span></a>
+						<ul class="nav child_menu">
+							<li><a href="{{ route('report.player') }}">플레이어별</a></li>
+
+							<li><a href="{{ route('report.summary') }}">요약</a></li>
+
+							<li><a href="{{ route('report.game') }}">게임별</a></li>
+
+							<li><a href="{{ route('report.month') }}">월별</a></li>
+						</ul>
+					</li>
+				</ul>
+
 			</div>
 			@endif
 
