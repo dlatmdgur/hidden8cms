@@ -615,7 +615,7 @@ class MemberController extends Controller
                     'user_seq' => $accountInfo->user_seq,
                 ],
                 [
-                    'account' => $accountInfo->google_email,
+                    'account' => $accountInfo->account,
                     'nickname' => $userInfo->nickname,
                     'chip' => $userInfo->chip,
                     'safe_chip' => $userInfo->safe_chip,
