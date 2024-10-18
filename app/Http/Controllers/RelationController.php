@@ -1467,100 +1467,100 @@ class RelationController extends Controller
 		];
 
 		// redis 접속
-		$poker = Redis::connection('redis_poker');
+		$holdem = Redis::connection('redis_holdem');
 		$slots = Redis::connection('redis_slots');
 
 
 		$ccu = new stdClass();
 
-		$ccu->holdem_reg_users 			= 0;
-		$ccu->holdemb_reg_users 		= 0;
-		$ccu->blackjack_reg_users		= 0;
-		$ccu->baccarat_reg_users		= 0;
-		$ccu->slot_reg_users			= 0;
+		// $ccu->holdem_reg_users 			= 0;
+		// $ccu->holdemb_reg_users 		= 0;
+		// $ccu->blackjack_reg_users		= 0;
+		// $ccu->baccarat_reg_users		= 0;
+		// $ccu->slot_reg_users			= 0;
 
-		$nowSlotUser		= $slots->keys('USER_SOCK*');
-		$nowHoldemUser      = $poker->smembers('holdem_ingame');
-		$nowBadugiUser      = $poker->smembers('badugi_ingame');
-		$nowBlackJackUser	= $poker->smembers('blackjack_ingame');
-		$nowBaccaratUser	= $poker->smembers('baccarat_ingame');
+		// $nowSlotUser		= $slots->keys('USER_SOCK*');
+		// $nowHoldemUser      = $poker->smembers('holdem_ingame');
+		// $nowBadugiUser      = $poker->smembers('badugi_ingame');
+		// $nowBlackJackUser	= $poker->smembers('blackjack_ingame');
+		// $nowBaccaratUser	= $poker->smembers('baccarat_ingame');
 
-		$ccu->holdem		= count($nowHoldemUser);
-		$ccu->holdemb		= count($nowBadugiUser);
-		$ccu->blackjack		= count($nowBlackJackUser);
-		$ccu->baccarat		= count($nowBaccaratUser);
-		$ccu->slot			= count($nowSlotUser);
+		$ccu->texasholdem	= $holdem->get('CCU_TH') ?? 0;
+		$ccu->badugi		= $holdem->get('CCU_BH') ?? 0;
+		$ccu->blackjack		= $holdem->get('CCU_BJ') ?? 0;
+		$ccu->baccarat		= $holdem->get('CCU_BC') ?? 0;
+		$ccu->slot			= sizeof($slots->keys('USER_SOCK*') ?? []);
 
-		//접속해 있는 유저가 없으면 굳이 가져올 필요가 없다.
-		if ( ($ccu->holdem + $ccu->holdemb + $ccu->blackjack + $ccu->baccarat + $ccu->slot) > 0)
-		{
-			$path = storage_path('reg_users').'.txt';
-			$regUsers = fopen($path, 'r');
+		// //접속해 있는 유저가 없으면 굳이 가져올 필요가 없다.
+		// if ( ($ccu->holdem + $ccu->holdemb + $ccu->blackjack + $ccu->baccarat + $ccu->slot) > 0)
+		// {
+		// 	$path = storage_path('reg_users').'.txt';
+		// 	$regUsers = fopen($path, 'r');
 
-			while (!feof($regUsers))
-			{
-				$userSeq = trim(fgets($regUsers));
+		// 	while (!feof($regUsers))
+		// 	{
+		// 		$userSeq = trim(fgets($regUsers));
 
-				if ($userSeq === '')
-					continue;
+		// 		if ($userSeq === '')
+		// 			continue;
 
-				//슬롯 유저의 경우
-				foreach ($nowSlotUser as $idx => $val)
-				{
-					$extUseq = str_replace('USER_SOCK_', '', $val);
+		// 		//슬롯 유저의 경우
+		// 		foreach ($nowSlotUser as $idx => $val)
+		// 		{
+		// 			$extUseq = str_replace('USER_SOCK_', '', $val);
 
-					if ($userSeq === $extUseq)
-					{
-						$ccu->slot_reg_users++;
-						unset($nowSlotUser[$idx]);
-					}
+		// 			if ($userSeq === $extUseq)
+		// 			{
+		// 				$ccu->slot_reg_users++;
+		// 				unset($nowSlotUser[$idx]);
+		// 			}
 
-				}
+		// 		}
 
-				//홀덤의 경우
-				foreach ($nowHoldemUser as $idx => $pUseq)
-				{
-					if ($pUseq === $userSeq)
-					{
-						$ccu->holdem_reg_users++;
-						unset($nowHoldemUser[$idx]);
-					}
-				}
+		// 		//홀덤의 경우
+		// 		foreach ($nowHoldemUser as $idx => $pUseq)
+		// 		{
+		// 			if ($pUseq === $userSeq)
+		// 			{
+		// 				$ccu->holdem_reg_users++;
+		// 				unset($nowHoldemUser[$idx]);
+		// 			}
+		// 		}
 
-				//바둑이의 경우
-				foreach ($nowBadugiUser as $idx => $pUseq)
-				{
-					if ($pUseq === $userSeq)
-					{
-						$ccu->holdemb_reg_users++;
-						unset($nowBadugiUser[$idx]);
-					}
-				}
+		// 		//바둑이의 경우
+		// 		foreach ($nowBadugiUser as $idx => $pUseq)
+		// 		{
+		// 			if ($pUseq === $userSeq)
+		// 			{
+		// 				$ccu->holdemb_reg_users++;
+		// 				unset($nowBadugiUser[$idx]);
+		// 			}
+		// 		}
 
-				//블랙잭의 경우
-				foreach ($nowBlackJackUser as $idx => $pUseq)
-				{
-					if ($pUseq === $userSeq)
-					{
-						$ccu->blackjack_reg_users++;
-						unset($nowBlackJackUser[$idx]);
-					}
-				}
+		// 		//블랙잭의 경우
+		// 		foreach ($nowBlackJackUser as $idx => $pUseq)
+		// 		{
+		// 			if ($pUseq === $userSeq)
+		// 			{
+		// 				$ccu->blackjack_reg_users++;
+		// 				unset($nowBlackJackUser[$idx]);
+		// 			}
+		// 		}
 
-				//바카라의 경우
-				foreach ($nowBaccaratUser as $idx =>$pUseq)
-				{
-					if ($pUseq === $userSeq)
-					{
-						$ccu->baccarat_reg_users++;
-						unset($nowBaccaratUser[$idx]);
-					}
-				}
+		// 		//바카라의 경우
+		// 		foreach ($nowBaccaratUser as $idx =>$pUseq)
+		// 		{
+		// 			if ($pUseq === $userSeq)
+		// 			{
+		// 				$ccu->baccarat_reg_users++;
+		// 				unset($nowBaccaratUser[$idx]);
+		// 			}
+		// 		}
 
-			}
+		// 	}
 
-			fclose($regUsers);
-		}
+		// 	fclose($regUsers);
+		// }
 
 		$data['ccu']	= $ccu;
 

@@ -60,7 +60,7 @@ class ReportController extends Controller
             $loseCnt = (int)$row->tot_play - (int)$row->tot_win;
 
             $row->datecode = sprintf('%s-%s-%s', substr($row->datecode, 0, 4), substr($row->datecode, 4, 2), substr($row->datecode, 6, 2));
-            $row->win_lose = $row->tot_win - $loseCnt;
+            $row->win_lose = (int)$row->tot_payout - (int)$row->tot_bet;
             $row->win_rate = ((int)$row->tot_win !== 0) ? ((int)$row->tot_win / (int)$row->tot_play * 100) : 0;
 
             //토탈값 계산
@@ -132,7 +132,7 @@ class ReportController extends Controller
             $loseCnt = (int)$row->tot_play - (int)$row->tot_win;
 
             $row->datecode = sprintf('%s-%s-%s', substr($row->datecode, 0, 4), substr($row->datecode, 4, 2), substr($row->datecode, 6, 2));
-            $row->win_lose = $row->tot_win - $loseCnt;
+            $row->win_lose = (int)$row->tot_payout - (int)$row->tot_bet;
             $row->win_rate = (int)$row->tot_win / (int)$row->tot_play * 100;
             $row->play_users = ((int)$row->tot_play !== 0) ? number_format((int)$row->tot_play / (int)$row->user_cnt, 1) : 0;
 
@@ -140,6 +140,7 @@ class ReportController extends Controller
             $total->win             += (int)$row->tot_win;
             $total->lose            += (int)$loseCnt;
             $total->play            += (int)$row->tot_play;
+            $total->win_lose        += (int)$row->win_lose;
             $total->user_cnt        += (int)$row->user_cnt;
             $total->bet             += (int)$row->tot_bet;
             $total->fee             += (int)$row->tot_fee;
@@ -147,7 +148,7 @@ class ReportController extends Controller
             $total->play_users      += (float)$row->play_users;
         }
 
-        $total->win_lose = $total->win - $total->lose;
+
         $total->win_rate = ($total->win !== 0) ? $total->win / $total->play * 100 : 0;
         $total->rtp      = ($total->payout !== 0) ? $total->payout / ($total->bet + $total->fee) * 100 : 0;
 
@@ -225,7 +226,7 @@ class ReportController extends Controller
             $row->datecode      = sprintf('%s-%s-%s', substr($row->datecode, 0, 4), substr($row->datecode, 4, 2), substr($row->datecode, 6, 2));
             $row->play_users    = ((int)$row->tot_play !== 0) ?  (int)$row->tot_play / (int)$row->user_cnt : 0;
             $row->tot_payout    = $row->tot_payout;
-            $row->win_lose      = $row->tot_win - $loseCnt;
+            $row->win_lose      = (int)$row->tot_payout - (int)$row->tot_bet;
             $row->win_rate      = ((int)$row->tot_win !== 0) ? (int)$row->tot_win / (int)$row->tot_play * 100 : 0;
 
             //
@@ -300,13 +301,13 @@ class ReportController extends Controller
             $row->datecode = sprintf('%s-%s', substr($row->datecode, 0, 4), substr($row->datecode, 4));
             $lose = (int)$row->tot_play - (int)$row->tot_win;
 
-            $row->win_lose = (int)$row->tot_win - $lose;
+            $row->win_lose = (int)$row->tot_payout - (int)$row->tot_bet;
 
-            $total->play += (int)$row->tot_play;
-            $total->bet += (int)$row->tot_bet;
-            $total->fee += (int)$row->tot_fee;
-            $total->payout += (int)$row->tot_payout;
-            $total->win_lose += $row->win_lose;
+            $total->play        += (int)$row->tot_play;
+            $total->bet         += (int)$row->tot_bet;
+            $total->fee         += (int)$row->tot_fee;
+            $total->payout      += (int)$row->tot_payout;
+            $total->win_lose    += $row->win_lose;
         }
 
         $total->rtp =  ($total->payout !== 0) ? $total->payout / ($total->bet + $total->fee) * 100 : 0;

@@ -29,7 +29,7 @@
 								<table class="table table-bordered table-striped">
 									<thead class="thead-dark text-center">
 										<tr>
-											<th class="col-1">홀덤</th>
+											<th class="col-1">텍사스홀덤</th>
 											<th class="col-1">홀덤바둑이</th>
 											<th class="col-1">블랙잭</th>
 											<th class="col-1">바카라</th>
@@ -39,8 +39,8 @@
 
 									<tbody>
 										<tr>
-											<td class="text-right pr-3">{{ number_format($ccu->holdem)    }}</td>
-											<td class="text-right pr-3">{{ number_format($ccu->holdemb)   }}</td>
+											<td class="text-right pr-3">{{ number_format($ccu->texasholdem)    }}</td>
+											<td class="text-right pr-3">{{ number_format($ccu->badugi)   }}</td>
 											<td class="text-right pr-3">{{ number_format($ccu->blackjack) }}</td>
 											<td class="text-right pr-3">{{ number_format($ccu->baccarat)  }}</td>
 											<td class="text-right pr-3">{{ number_format($ccu->slot)      }}</td>

@@ -30,13 +30,13 @@
 				<ul class="nav side-menu">
 					<li><a><i class="fa fa-male"></i> 추천인 정보<span class="fa fa-chevron-down"></span></a>
 						<ul class="nav child_menu">
-							<li><a href="{{ route('relations.search') }}">추천인 관리</a></li>
+						{{-- <li><a href="{{ route('relations.search') }}">추천인 관리</a></li>
 							<li><a href="{{ route('relations.points') }}">포인트 적립내역</a></li>
 							<li><a href="{{ route('relations.rewards') }}">포인트 지급</a></li>
 							<li><a href="{{ route('relations.refunds') }}">포인트 환급</a></li>
-							<li><a href="{{ route('relations.rewardlogs') }}">포인트 지급/환급 내역</a></li>
+							<li><a href="{{ route('relations.rewardlogs') }}">포인트 지급/환급 내역</a></li> --}}
 							<li style="border-top: 1px solid #606060;"><a href="{{ route('relations.userstat') }}">실시간 플레이 유저</a></li>
-							<li><a href="{{ route('relations.logs') }}">배팅 현황</a></li>
+					 	{{--<li><a href="{{ route('relations.logs') }}">배팅 현황</a></li>--}}
 				@if(auth()->user()->can('outer0'))
 							<li style="border-top: 1px solid #606060;"><a href="{{ route('tester.list') }}">테스트유저 관리 설정</a></li>
 				@endif

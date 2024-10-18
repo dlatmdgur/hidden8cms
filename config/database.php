@@ -312,7 +312,7 @@ return [
 		],
 
 
-		'redis_poker'	=> [
+		'redis_holdem'	=> [
 
 			'client'	=> env('REDIS_STORE_CLIENT', 'phpredis'),
 
@@ -321,11 +321,11 @@ return [
 				'prefix'	=> '',
 			],
 
-			'host'			=> env('REDIS_POKER_HOST', '127.0.0.1'),
-			'password'		=> env('REDIS_POKER_PASSWORD', null),
-			'port'			=> env('REDIS_POKER_PORT', '6379'),
-			'database'		=> env('REDIS_POKER_DB', '0'),
-			'read_timeout'	=> env('REDIS_POKER_TIMEOUT', 5),
+			'host'			=> env('REDIS_HOLDEM_HOST', '127.0.0.1'),
+			'password'		=> env('REDIS_HOLDEM_PASSWORD', null),
+			'port'			=> env('REDIS_HOLDEM_PORT', '6379'),
+			'database'		=> env('REDIS_HOLDEM_DB', '0'),
+			'read_timeout'	=> env('REDIS_HOLDEM_TIMEOUT', 5),
 		],
     ],
 
